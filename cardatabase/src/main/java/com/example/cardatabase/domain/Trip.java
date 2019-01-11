@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -23,16 +24,25 @@ public class Trip {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long Tid;
 	private String Name;
+	private Set<PersonTrip> PersonTrip;
 	@ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "car_Trip", joinColumns = { @JoinColumn(name =
      "Tid") }, inverseJoinColumns = { @JoinColumn(name = "id") }) 
     private Set<Car> cars = new HashSet<Car>(0); 
-
+   
     public Set<Car> getCars() {
       return cars;
     }
+	@OneToMany(mappedBy = "Trip", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<PersonTrip> getPersonTrip() {
+		return PersonTrip;
+	}
 
-    public void setCars(Set<Car> cars) {
+	public void setPersonTrip(Set<PersonTrip> personTrip) {
+		PersonTrip = personTrip;
+	}
+
+	public void setCars(Set<Car> cars) {
       this.cars = cars;
     }
 
